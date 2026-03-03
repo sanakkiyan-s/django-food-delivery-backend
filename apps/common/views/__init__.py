@@ -1,5 +1,5 @@
 # flake8: noqa
-from .permissions import AllowAdminOnly, AllowCustomerOnly, AllowKitchenOnly , RoleBasedPermission
+from .permissions import RoleBasedPermission
 from .mixins import NonAuthenticatedAPIMixin, AppViewMixin
 from .base import AppAPIView, AppCreateAPIView
 from .generic import (
