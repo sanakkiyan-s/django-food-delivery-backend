@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'phonenumber_field',
-    'django_extensions',
     
     # Custom apps
     'apps.common',
