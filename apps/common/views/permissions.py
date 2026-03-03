@@ -1,6 +1,45 @@
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.permissions import BasePermission
 
+from apps.user.config import UserTypeChoices
+
+
+class AllowAdminOnly(BasePermission):
+    """Allows access only to Admin users, then delegates to RBAC."""
+
+    def has_permission(self, request, view):
+        user = request.user
+        if isinstance(user, AnonymousUser):
+            return False
+        
+        if getattr(user, "user_type", None) == UserTypeChoices.admin:
+            return RoleBasedPermission().has_permission(request, view)
+        return False
+
+
+class AllowCustomerOnly(BasePermission):
+    """Allows access only to Customer users."""
+
+    def has_permission(self, request, view):
+        user = request.user
+        if isinstance(user, AnonymousUser):
+            return False
+        
+        return getattr(user, "user_type", None) == UserTypeChoices.customer
+
+
+class AllowKitchenOnly(BasePermission):
+    """Allows access only to Kitchen users, then delegates to RBAC."""
+
+    def has_permission(self, request, view):
+        user = request.user
+        if isinstance(user, AnonymousUser):
+            return False
+        
+        if getattr(user, "user_type", None) == UserTypeChoices.kitchen:
+            return RoleBasedPermission().has_permission(request, view)
+        return False
+
 
 class RoleBasedPermission(BasePermission):
     """
